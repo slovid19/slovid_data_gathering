@@ -14,19 +14,19 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         await page.goto(SOURCE_URL,
             {
                 waitUntil: 'networkidle2'
-            });
+            }).catch( () => {process.exit(1)});
         return await page.evaluate(async() => {
             return document.getElementsByTagName("iframe")[0].src;
-        });
+        }).catch( () => {process.exit(1)});
     }
-    let dataURL = await getIframeSource();
+    let dataURL = await getIframeSource().catch( () => {process.exit(1)});
 
     await page.goto(
         dataURL,
         {
             waitUntil: 'networkidle2'
         }
-    );
+    ).catch( () => {process.exit(1)});
     let updateDate = await page.evaluate( () => {
         let tag = "span";
         let str = "Cases by Occupation";
@@ -42,10 +42,9 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
             .split("/").join("-");
             
         return date;
-    });
+    }).catch( () => {process.exit(1)});
     await page.waitFor(1000);
-    await page.click(".igc-data-download-text");
-    await page.waitFor(8000);
+    await page.click(".igc-data-download-text").catch( () => {process.exit(1)});
     await browser.close();
     console.log(updateDate);
 })();

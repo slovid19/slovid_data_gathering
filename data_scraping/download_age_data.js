@@ -14,12 +14,12 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         await page.goto(SOURCE_URL,
             {
                 waitUntil: 'networkidle2'
-            });
+            }).catch ( () => {process.exit(1)});
         return await page.evaluate(async() => {
             return document.getElementsByTagName("iframe")[0].src;
-        });
+        }).catch( () => {process.exit(1)});
     }
-    let dataURL = await getIframeSource();
+    let dataURL = await getIframeSource().catch( () => {process.exit(1)});
     console.log("Data found at: " + dataURL);
 
     await page.goto(
@@ -27,7 +27,7 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         {
             waitUntil: 'networkidle2'
         }
-    );
+    ).catch( () => {process.exit(1)});
     await page.evaluate( () => {
         let tag = "span";
         let str = "Cases by Age (over time)";
@@ -38,9 +38,8 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         el.scrollIntoView();
         let dataLinks = 
             document.getElementsByClassName("igc-data-download-text");
-    });
+    }).catch( () => {process.exit(1);});
     await page.waitFor(1000);
-    await page.click(".igc-data-download-text");
-    await page.waitFor(8000);
+    await page.click(".igc-data-download-text").catch( () => {process.exit(1)});
     await browser.close();
 })();

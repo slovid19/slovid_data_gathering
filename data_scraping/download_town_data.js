@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
-
 (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -10,16 +9,17 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         }
     });
     await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: './browser_downloads'})
+
     let getIframeSource = async() => {
         await page.goto(SOURCE_URL,
             {
                 waitUntil: 'networkidle2'
-            });
+            }).catch ( () => {process.exit(1)});
         return await page.evaluate(async() => {
             return document.getElementsByTagName("iframe")[0].src;
-        });
+        }).catch( () => {process.exit(1)});
     }
-    let dataURL = await getIframeSource();
+    let dataURL = await getIframeSource().catch( () => {process.exit(1)});
     console.log("Data found at: " + dataURL);
 
     await page.goto(
@@ -27,7 +27,7 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         {
             waitUntil: 'networkidle2'
         }
-    );
+    ).catch( () => {process.exit(1)});
     await page.evaluate( () => {
         let tag = "span";
         let str = "Cases by Location (over time)";
@@ -38,9 +38,8 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
         el.scrollIntoView();
         let dataLinks = 
             document.getElementsByClassName("igc-data-download-text");
-    });
+    }).catch( () => {process.exit(1)});
     await page.waitFor(1000);
-    await page.click(".igc-data-download-text");
-    await page.waitFor(8000);
+    await page.click(".igc-data-download-text").catch( () => {process.exit(1)});
     await browser.close();
 })();
