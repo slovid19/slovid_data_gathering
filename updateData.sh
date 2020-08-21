@@ -20,3 +20,8 @@ echo "Processing town data..."
 echo "Exporting..."
 cd ..
 mv data_processing/export/* export
+
+upload_date=$(date +"%m-%d-%y")
+git add .
+git commit -m "(AUTOMATIC) Update data $date"
+git push
