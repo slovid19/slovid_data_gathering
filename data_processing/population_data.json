@@ -1,0 +1,15 @@
+/* 
+Population Estimates for SLO county cities/towns
+
+Sources:
+[1] - http://www.dof.ca.gov/Forecasting/Demographics/Estimates/e-1/
+*/
+{
+    'Arroyo Grande':    17687,  //Estimate 1/1/2020, Source [1]
+    'Atascadero':       30057,  //Estimate 1/1/2020, Source [1]
+    'Paso Robles':      31221,  //Estimate 1/1/2020, Source [1]
+    'Grover Beach':     13214,  //Estimate 1/1/2020, Source [1]
+    'Morro Bay':        10188,  //Estimate 1/1/2020, Source [1]
+    'Pismo Beach':      8139,   //Estimate 1/1/2020, Source [1]
+    'San Luis Obispo:   45920,  //Estimate 1/1/2020, Source [1]
+}
