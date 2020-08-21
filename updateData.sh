@@ -1,5 +1,4 @@
 #!/bin/bash
-cd /home/nscheink/slovid_data_gathering
 mkdir -p export
 
 echo "Downloading data..."
