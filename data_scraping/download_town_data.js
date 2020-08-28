@@ -8,7 +8,7 @@ const SOURCE_URL = "https://www.emergencyslo.org/en/positive-case-details.aspx";
             console.log(consoleMessageObject._text)
         }
     });
-    await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: './browser_downloads'})
+    await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: `${__dirname}/browser_downloads`})
 
     let getIframeSource = async() => {
         await page.goto(SOURCE_URL,

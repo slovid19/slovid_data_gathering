@@ -1,9 +1,8 @@
-#!/usr/bin/node
 const fs = require("fs");
 const parse = require("csv-parse");
 
-const DATA_PATH = "./import/townTimeData.csv";
-const OUTPUT_PATH = "export/townTimeData.json";
+const DATA_PATH = `${__dirname}/import/townTimeData.csv`;
+const OUTPUT_PATH = `${__dirname}/../export/townTimeData.json`;
 
 let csvData = [];
 let jsonData = {};
