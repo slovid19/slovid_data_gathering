@@ -15,8 +15,3 @@ node data_processing/convert_ageTimeCsv_to_json.js
 
 echo "Processing town data..."
 node data_processing/convert_townTimeCsv_to_json.js
-
-upload_date=$(date +"%m-%d-%y")
-git add .
-git commit -m "(AUTOMATIC) Update data $date"
-git push

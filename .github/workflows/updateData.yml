@@ -16,11 +16,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
-    - name: Add & Commit
-      uses: EndBug/add-and-commit@v4.4.0
     - run: npm ci
     - run: npm run updateData
+    - name: Add & Commit
+      uses: EndBug/add-and-commit@v4.4.0
+      with:
+        message: (AUTOMATIC) Update data ${{ steps.date.outputs.date }}
