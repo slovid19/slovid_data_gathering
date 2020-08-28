@@ -3,7 +3,9 @@ const fs = require("fs");
 const parse = require("csv-parse");
 
 const DATA_PATH = "./import/townTimeData.csv";
+const POP_DATA_PATH = "population_data.json";
 const OUTPUT_PATH = "export/townTimeData.json";
+const CAPITA_OUTPUT_PATH = "export/townTimePer1000.json"
 
 let csvData = [];
 let jsonData = {};
@@ -67,14 +69,14 @@ let convertJsonToChartJS = function()
         let labelName = (label == "total_cases") ? "Total Cases" : label;
         let color = "hsl(" + Math.round(i * (360 / colorNum) ) + ", 70%, 50%)";
         dataObjects[label] = 
-        {
-            "label": labelName,
-            "data": [],
-            "fill": false,
-            "hidden": true,
-            "borderColor": color,
-            "lineTension": 0.1
-        };
+            {
+                "label": labelName,
+                "data": [],
+                "fill": false,
+                "hidden": true,
+                "borderColor": color,
+                "lineTension": 0.1
+            };
     }
     for(let i in caseData.cases)
     {
@@ -93,11 +95,72 @@ let convertJsonToChartJS = function()
     }
     ageTimeData.datasets = datasets;
     ageTimeData.labels = labels;
-    
+
     let currTime = new Date();
     ageTimeData.lastUpdated = currTime.toLocaleString();
 
     jsonData = ageTimeData;
+    //console.log(jsonData);
+}
+let convertTotalToPer1000 = function(populationData)
+{
+    let towns = Object.keys(populationData["towns"]);
+
+    //Remove commentary data from town array
+    let maxCasesIndex = 0;
+    indicesToDel = [];
+    for(let i in jsonData["datasets"])
+    {
+        let set = jsonData["datasets"][i];
+        if(set.label == "Total Cases")
+        {
+            set.label = "SLO County Total";
+            maxCasesIndex = i;
+            set.maxCases = 
+                set.maxCases/populationData["towns"][set.label] * 1000;
+        }
+        let townIndex = towns.indexOf(set.label);
+        if(townIndex == -1)
+           indicesToDel.push(i); 
+        else
+        {
+            let population = populationData["towns"][towns[townIndex]];
+            for(let j in set.data)
+            {
+                set.data[j] = set.data[j]/population * 1000;
+            }
+            set["source"] = populationData["townSources"][set.label];
+
+        }
+    }
+    while(indicesToDel.length > 0)
+    {
+        let i = indicesToDel.pop();
+        jsonData["datasets"].splice(i, 1);
+    }
+    for(let i in jsonData["datasets"])
+    {
+        let set = jsonData["datasets"][i];
+        if(set.maxCases != undefined)
+        {
+            set.maxCases = findMaxCases(jsonData);
+        }
+    }
+    jsonData["sources"] = populationData["sources"];
+    jsonData["townSources"] = populationData["townSources"];
+     
+    
+}
+let findMaxCases = function(jsonData)
+{
+    let maxCases = 0;
+    for(let i in jsonData["datasets"])
+    {
+        let set = jsonData["datasets"][i];
+        for(let j in set.data)
+            maxCases = Math.max(maxCases, set.data[j]);
+    }
+    return maxCases;
 }
 
 let line = 0;
@@ -105,16 +168,22 @@ fs.createReadStream(DATA_PATH)
     .pipe(parse({delimiter: ',', quote: '\\', relax_column_count: true}))
     .on('data', function(csvRow) {
         csvRow = csvRow.map( data => data.replace(/\"/g,'') );
-        if(line++ == 0)
+            if(line++ == 0)
             initJson(csvRow);
-        else
+            else
             pushJson(csvRow);
-         
-        csvData.push(csvRow);
-    })
+
+            csvData.push(csvRow);
+        })
     .on('end', function() {
         convertJsonToChartJS();
         let jsonString = JSON.stringify(jsonData);
         fs.writeFileSync(OUTPUT_PATH, jsonString);
+
+        let populationData = fs.readFileSync(POP_DATA_PATH);
+        convertTotalToPer1000(JSON.parse(populationData));
+        
+        jsonString = JSON.stringify(jsonData);
+        fs.writeFileSync(CAPITA_OUTPUT_PATH, jsonString);
     });
 

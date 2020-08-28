@@ -1,15 +1,39 @@
-/* 
-Population Estimates for SLO county cities/towns
-
-Sources:
-[1] - http://www.dof.ca.gov/Forecasting/Demographics/Estimates/e-1/
-*/
 {
-    'Arroyo Grande':    17687,  //Estimate 1/1/2020, Source [1]
-    'Atascadero':       30057,  //Estimate 1/1/2020, Source [1]
-    'Paso Robles':      31221,  //Estimate 1/1/2020, Source [1]
-    'Grover Beach':     13214,  //Estimate 1/1/2020, Source [1]
-    'Morro Bay':        10188,  //Estimate 1/1/2020, Source [1]
-    'Pismo Beach':      8139,   //Estimate 1/1/2020, Source [1]
-    'San Luis Obispo:   45920,  //Estimate 1/1/2020, Source [1]
+    "towns": {
+        "Arroyo Grande":        17687,  
+        "Atascadero":           30057,  
+        "Paso Robles":          31221,  
+        "Grover Beach":         13214,  
+        "Morro Bay":            10188,  
+        "Pismo Beach":          8139,   
+        "San Luis Obispo":      45920,  
+        "SLO County Total":     283111,
+        "CMC (Inmates)":        3823
+    },
+    "townSources": {
+        "Arroyo Grande":        1,  
+        "Atascadero":           1,  
+        "Paso Robles":          1,  
+        "Grover Beach":         1,  
+        "Morro Bay":            1,  
+        "Pismo Beach":          1,  
+        "San Luis Obispo":      1,  
+        "SLO County Total":     2,
+        "CMC (Inmates)":        3
+    },
+    "sources":
+    [
+        { "URL":
+            "http://www.dof.ca.gov/Forecasting/Demographics/Estimates/e-1/",
+            "Estimation Date": "1/1/2020"
+        },
+        { "URL":
+            "https://www.census.gov/quickfacts/sanluisobispocountycalifornia",
+            "Estimation Date": "7/1/2019"
+        },
+        { "URL":
+            "https://www.cdcr.ca.gov/research/reports-and-statistics-cmc/",
+            "Estimation Date": "3/20/2020"
+        }
+    ]
 }

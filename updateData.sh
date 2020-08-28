@@ -7,7 +7,7 @@ cd data_scraping
 
 echo "Moving data to processing..."
 cd ..
-mv data_scraping/browser_downloads/* data_processing/import
+cp data_scraping/browser_downloads/* data_processing/import
 
 echo "Processing age data..."
 cd data_processing
@@ -18,9 +18,9 @@ echo "Processing town data..."
 
 echo "Exporting..."
 cd ..
-mv data_processing/export/* export
+cp data_processing/export/* export
 
 upload_date=$(date +"%m-%d-%y")
-git add .
-git commit -m "(AUTOMATIC) Update data $date"
-git push
+#git add .
+#git commit -m "(AUTOMATIC) Update data $date"
+#git push
