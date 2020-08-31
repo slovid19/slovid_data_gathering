@@ -1,7 +1,7 @@
 const fs = require("fs");
 const parse = require("csv-parse");
 
-const POP_DATA_PATH = `${__dirname__}/population_data.json`;
+const POP_DATA_PATH = `${__dirname}/population_data.json`;
 const CAPITA_OUTPUT_PATH = `${__dirname}/../export/townTimePer1000.json`
 const DATA_PATH = `${__dirname}/import/townTimeData.csv`;
 const OUTPUT_PATH = `${__dirname}/../export/townTimeData.json`;
