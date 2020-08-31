@@ -1,7 +1,10 @@
 #!/bin/bash
-MAX_RETRY=2
+set -e
 
-mkdir -p occupation_data
+MAX_RETRY=2
+SCRIPT_DIR=$(dirname "$0")
+
+mkdir -p "${SCRIPT_DIR}"/occupation_data
 n=0
 until [ "$n" -ge "$MAX_RETRY" ]; do
     update_date=$(node download_occupation_data.js) && break
@@ -14,4 +17,4 @@ if [ "$n" -ge "$MAX_RETRY" ]; then
     exit 1
 fi
 
-mv browser_downloads/data.csv occupation_data/$filename
+mv "${SCRIPT_DIR}"/browser_downloads/data.csv "${SCRIPT_DIR}"/occupation_data/$filename

@@ -1,15 +1,15 @@
 {
-  "name": "data_scraping",
+  "name": "slovid_data_gathering",
   "version": "1.0.0",
-  "description": "",
-  "main": "download_age_data.js",
+  "description": "Update COVID Data for SLO County",
   "dependencies": {
+    "csv-parse": "^4.12.0",
     "puppeteer": "^5.2.1",
     "slimerjs": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "updateData": "./updateData.sh"
   },
   "author": "",
   "license": "ISC"
