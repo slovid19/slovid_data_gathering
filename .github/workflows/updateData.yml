@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: echo "::set-output name=date::$(TZ=America/Los_Angeles date +'%Y-%m-%d')"
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
