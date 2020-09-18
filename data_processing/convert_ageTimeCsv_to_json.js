@@ -101,8 +101,11 @@ let convertJsonToChartJS = function()
 
 let line = 0;
 fs.createReadStream(DATA_PATH)
-    .pipe(parse({delimiter: ',', quote: '\\', relax_column_count: true}))
+    .pipe(parse({delimiter: '\n', quote: '\\', relax_column_count: true}))
     .on('data', function(csvRow) {
+        const commasInQuotes = /,(?=[^"]*"[^"]*(?:"[^"]*"[^"]*)*$)/gm;
+        csvRow = csvRow.map( data => data.replace(commasInQuotes, ''));
+        csvRow = csvRow[0].split(",");
         csvRow = csvRow.map( data => data.replace(/\"/g,'') );
         if(line++ == 0)
             initJson(csvRow);
@@ -114,6 +117,7 @@ fs.createReadStream(DATA_PATH)
     .on('end', function() {
         convertJsonToChartJS();
         let jsonString = JSON.stringify(jsonData);
+        let data = jsonData["datasets"][1].data;
         fs.writeFileSync(OUTPUT_PATH, jsonString);
     });
 
